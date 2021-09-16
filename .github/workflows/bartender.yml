@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Execute bartender command
-        run: "echo bartender ran successfully"
+        run: echo bartender ${{ github.event.client_payload.bartender_input }}

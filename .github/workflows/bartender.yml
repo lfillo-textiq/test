@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:   
       - uses: actions/checkout@v2
+      - name: Make sure /usr/etc exists
+        run: mkdir -p /usr/etc
       - name: Add secrets.config
         run: touch /usr/etc/secrets.config
       - name: Add secrets to config for integration tests

@@ -12,7 +12,9 @@ jobs:
       - name: Make sure /usr/etc exists
         run: sudo mkdir -p /usr/etc
       - name: Add secrets.config
-        run: touch /usr/etc/secrets.config
+        run: sudo touch /usr/etc/secrets.config
+      - name: User own file 
+        run: sudo chown $USER /usr/etc/secrets.config
       - name: Add secrets to config for integration tests
         run: |
           echo "BUILD_AWS_SECRET_ACCESS_KEY=${{ secrets.BUILD_AWS_SECRET_ACCESS_KEY }}" >> /usr/etc/secrets.config

@@ -1,0 +1,12 @@
+name: Bartender
+on:
+  repository_dispatch:
+    types:
+      - bartender
+jobs:
+  check:
+    name: Run bartender
+    runs-on: ubuntu-latest
+    steps:
+      - name: Execute bartender command
+        run: "echo bartender ran successfully"

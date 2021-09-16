@@ -20,8 +20,8 @@ jobs:
           echo "BUILD_AWS_SECRET_ACCESS_KEY=${{ secrets.BUILD_AWS_SECRET_ACCESS_KEY }}" >> /usr/etc/secrets.config
           echo "UAT_AWS_SECRET_ACCESS_KEY=${{ secrets.UAT_AWS_SECRET_ACCESS_KEY }}" >> /usr/etc/secrets.config
           echo "PROD_AWS_SECRET_ACCESS_KEY=${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}" >> /usr/etc/secrets.config
-          echo "GITHUB_PAT=${{ secrets.BARTENDER_PAT }}" >> ./config/secrets.config
-      - name: Execute bartender command
-        run: echo bartender ${{ github.event.client_payload.bartender_input }} 
+          echo "GITHUB_PAT=${{ secrets.BARTENDER_PAT }}" >> /usr/etc/secrets.config
       - name: Install latest bartender binary
         run: sudo ./scripts/install_latest_bartender.sh
+      - name: Execute bartender command
+        run: echo bartender ${{ github.event.client_payload.bartender_input }} 

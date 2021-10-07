@@ -6,6 +6,10 @@ on:
         description: 'Input to bartender command'
         required: true
         default: '-v'
+      bartender_id:
+        descripton: 'Unique Id to represent this run',
+        required: true,
+        default: 0
 jobs:
   run:
     name: Run bartender

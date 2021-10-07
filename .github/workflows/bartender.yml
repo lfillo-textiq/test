@@ -1,8 +1,11 @@
 name: Bartender
 on:
-  repository_dispatch:
-    types:
-      - bartender
+  workflow_dispatch:
+    inputs:
+      bartender_input:
+        description: 'Input to bartender command'
+        required: true
+        default: '-v'
 jobs:
   run:
     name: Run bartender
@@ -24,4 +27,4 @@ jobs:
       - name: Install latest bartender binary
         run: sudo bash ./scripts/install_latest_bartender.sh
       - name: Execute bartender command
-        run: yes y | bartender ${{ github.event.client_payload.bartender_input }} -d
+        run: yes y | bartender ${{ github.event.inputs.bartender_input }} -d

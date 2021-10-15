@@ -6,9 +6,19 @@ on:
         description: 'Bartender CLI command'
         required: true
         default: '-v'
+      id:
+        description: 'Run Id'
+        required: true
+        default: '0'
 jobs:
+  id:
+    name: Workflow Id provider
+    runs-on: ubuntu-latest
+    steps:
+      - name: ${{github.event.inputs.id}}
+        run: echo ${{ github.event.inputs.id }}
   run:
-    name: Run bartender
+    name: ${{ github.event.inputs.bartender_command }}
     runs-on: ubuntu-latest
     steps:   
       - uses: actions/checkout@v2

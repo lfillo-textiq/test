@@ -13,11 +13,11 @@ on:
         
 jobs:
   user:
-    name: ${{ github.events.inputs.user}}
+    name: ${{ github.event.inputs.user}}
     runs-on: ubuntu-latest
     steps:
       - name: Print user
-        run: echo ${{ github.events.inputs.user}}
+        run: echo ${{ github.event.inputs.user}}
   run:
     name: ${{ github.event.inputs.bartender_command }}
     runs-on: ubuntu-latest

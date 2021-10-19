@@ -6,8 +6,18 @@ on:
         description: 'Bartender CLI command'
         required: true
         default: '-v'
+      user:
+        description: 'Id of slack user which triggered this workflow'
+        required: true
+        default: 'U020CNBGDQA'
         
 jobs:
+  user:
+    name: ${{ github.events.inputs.user}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print user
+        run: echo ${{ github.events.inputs.user}}
   run:
     name: ${{ github.event.inputs.bartender_command }}
     runs-on: ubuntu-latest

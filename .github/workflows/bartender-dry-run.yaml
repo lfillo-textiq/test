@@ -38,4 +38,16 @@ jobs:
       - name: Install latest bartender binary
         run: sudo bash ./scripts/install_latest_bartender.sh
       - name: Execute bartender command
-        run: yes y | ${{ github.event.inputs.bartender_command }} -D -d
+        run: ./${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee output.txt
+      - name: Set release file path
+        id: relfile
+        run: | 
+          echo "::set-output name=REL_FILE_PATH::$(echo $(tail -1 output.txt) | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["rel_file_path"])')"     
+      - name: Upload dry run release file
+        uses: actions/upload-artifact@v2
+        with:
+          name: bartender-command-output
+          path: ${{ steps.relfile.outputs.REL_FILE_PATH }}
+  output:
+    runs-on: ubuntu-latest
+    needs: [user, run]

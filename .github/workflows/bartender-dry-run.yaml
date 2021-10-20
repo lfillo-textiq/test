@@ -48,5 +48,5 @@ jobs:
       - name: Upload dry run release file
         uses: actions/upload-artifact@v2
         with:
-          name: bartender-command-output
+          name: bartender-dry-run-relfile
           path: ${{ steps.relfile.outputs.path}}

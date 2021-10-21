@@ -37,9 +37,9 @@ jobs:
         run: sudo pip3 install PyGithub==1.55
       - name: Install latest bartender binary
         run: sudo bash ./scripts/install_latest_bartender.sh
-      - name: unzip bartender binary
+      - name: unzip bartender binary [REMOVE ME]
         run: unzip bartender.zip
-      - name: Execute bartender command
+      - name: Execute bartender command [REMOVE ME ./]
         run: ./${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee output.txt
       - name: Set release file path
         id: relfile

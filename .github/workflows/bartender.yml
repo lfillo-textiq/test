@@ -48,5 +48,5 @@ jobs:
       - name: Upload bartender output file
         uses: actions/upload-artifact@v2
         with:
-          name: bartender-output-output
+          name: bartender-command-output
           path: /tmp/output.txt

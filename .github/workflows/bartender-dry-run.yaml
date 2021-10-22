@@ -6,7 +6,7 @@ on:
         description: 'Bartender CLI command'
         required: true
         default: '-v'
-      user:
+      release_manager:
         description: 'Id of slack user which triggered this workflow'
         required: true
         default: 'U020CNBGDQA'

@@ -12,12 +12,16 @@ on:
         default: 'U020CNBGDQA'
         
 jobs:
-  user:
-    name: ${{ github.event.inputs.user}}
+  upload-inputs:
     runs-on: ubuntu-latest
     steps:
-      - name: Print user
-        run: echo ${{ github.event.inputs.user}}
+      - name: Store inputs in file
+        run: echo ${{ github.event.inputs }} > inputs.json
+      - name: Upload inputs artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: workflow-inputs
+          path: inputs.json
   run:
     name: ${{ github.event.inputs.bartender_command }}
     runs-on: ubuntu-latest
@@ -44,9 +48,9 @@ jobs:
       - name: Execute bartender command [REMOVE ./]
         run: ./${{ github.event.inputs.bartender_command }} -d -s 2>&1 | tee /tmp/output.txt
       - name: Get last line of output.txt (release process output object, all other lines are logs)
-        run: echo $(tail -1 /tmp/output.txt) > /tmp/output.txt
+        run: echo $(tail -1 /tmp/output.txt) > /tmp/output.json
       - name: Upload bartender output file
         uses: actions/upload-artifact@v2
         with:
           name: bartender-command-output
-          path: /tmp/output.txt
+          path: /tmp/output.json

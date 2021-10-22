@@ -16,7 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Store inputs in file
-        run: echo ${{ toJSON(github.event.inputs) }} > inputs.json
+        env:
+          WORKFLOW_INPUTS: ${{ toJSON(github.event.inputs) }}
+        run: echo "$WORKFLOW_INPUTS" > inputs.json
       - name: Upload inputs artifact
         uses: actions/upload-artifact@v2
         with:

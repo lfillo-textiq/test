@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Store inputs in file
-        run: echo ${{ github.event.inputs }} > inputs.json
+        run: echo ${{ toJSON(github.event.inputs) }} > inputs.json
       - name: Upload inputs artifact
         uses: actions/upload-artifact@v2
         with:
@@ -43,11 +43,11 @@ jobs:
       - name: unzip bartender binary [REMOVE ME]
         run: unzip bartender.zip
       - name: Execute bartender command [REMOVE ME ./]
-        run: ./${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee output.txt
+        run: ./${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee outputs.txt
       - name: Set release file path
         id: relfile
         run: | 
-          echo ::set-output name=path::$(echo $(tail -1 output.txt) | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["rel_file_path"])')    
+          echo ::set-output name=path::$(echo $(tail -1 outputs.txt) | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["rel_file_path"])')    
       - name: Upload dry run release file
         uses: actions/upload-artifact@v2
         with:

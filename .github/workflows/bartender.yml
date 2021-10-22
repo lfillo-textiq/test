@@ -16,14 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Store inputs in file
-        run: echo ${{ github.event.inputs }} > inputs.json
+        run: echo ${{ toJSON(github.event.inputs) }} > inputs.json
       - name: Upload inputs artifact
         uses: actions/upload-artifact@v2
         with:
           name: workflow-inputs
           path: inputs.json
-  run:
-    name: ${{ github.event.inputs.bartender_command }}
+  run-bartender:
     runs-on: ubuntu-latest
     steps:   
       - uses: actions/checkout@v2
@@ -46,11 +45,11 @@ jobs:
       - name: unzip bartender binary [REMOVE ME]
         run: unzip bartender.zip
       - name: Execute bartender command [REMOVE ./]
-        run: ./${{ github.event.inputs.bartender_command }} -d -s 2>&1 | tee /tmp/output.txt
-      - name: Get last line of output.txt (release process output object, all other lines are logs)
-        run: echo $(tail -1 /tmp/output.txt) > /tmp/output.json
-      - name: Upload bartender output file
+        run: ./${{ github.event.inputs.bartender_command }} -d -s 2>&1 | tee /tmp/outputs.txt
+      - name: Get last line of outputs.txt (release process output object, all other lines are logs)
+        run: echo $(tail -1 /tmp/outputs.txt) > /tmp/outputs.json
+      - name: Upload bartender outputs file
         uses: actions/upload-artifact@v2
         with:
-          name: bartender-command-output
-          path: /tmp/output.json
+          name: bartender-command-outputs
+          path: /tmp/outputs.json

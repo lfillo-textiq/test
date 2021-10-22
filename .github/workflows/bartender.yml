@@ -6,10 +6,13 @@ on:
         description: 'Bartender CLI command'
         required: true
         default: '-v'
-      user:
+      release_manager:
         description: 'Id of slack user which triggered this workflow'
         required: true
         default: 'U020CNBGDQA'
+      dryrun_relfile_id:
+        description: 'Id of dry run release file uploaded to slack'
+        required: false
         
 jobs:
   upload-workflow-inputs:

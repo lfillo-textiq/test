@@ -12,18 +12,18 @@ on:
         default: 'U020CNBGDQA'
         
 jobs:
-  upload-inputs:
+  upload-workflow-inputs:
     runs-on: ubuntu-latest
     steps:
       - name: Store inputs in file
         env:
           WORKFLOW_INPUTS: ${{ toJSON(github.event.inputs) }}
-        run: echo "$WORKFLOW_INPUTS" > inputs.json
+        run: echo "$WORKFLOW_INPUTS" > /tmp/inputs.json
       - name: Upload inputs artifact
         uses: actions/upload-artifact@v2
         with:
           name: workflow-inputs
-          path: inputs.json
+          path: /tmp/inputs.json
   run-bartender:
     runs-on: ubuntu-latest
     steps:   

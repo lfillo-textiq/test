@@ -49,10 +49,10 @@ jobs:
           set -o pipefail
           ./${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee outputs.txt
       - name: Get last line of outputs.txt (release process output object, all other lines are logs)
-        if: always()
+        if: failure()
         run: echo $(tail -1 /tmp/outputs.txt) > /tmp/outputs.json
       - name: Upload bartender outputs file
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: bartender-command-outputs

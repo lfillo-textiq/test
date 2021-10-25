@@ -63,6 +63,7 @@ jobs:
         if: ${{ steps.command.outputs.exit-code == 0}}
         id: relfile
         run: | 
+          echo /tmp/outputs.json
           echo ::set-output name=path::$(echo /tmp/outputs.json | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["release_file"]["path"])')    
       - name: Upload dry run release file if no failiures
         if: ${{ steps.command.outputs.exit-code == 0}}

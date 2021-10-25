@@ -48,11 +48,20 @@ jobs:
         run: |
           set -o pipefail
           ./${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee outputs.txt
-      - name: Set release file path
+      - name: Get last line of outputs.txt (release process output object, all other lines are logs)
+        run: echo $(tail -1 /tmp/outputs.txt) > /tmp/outputs.json
+      - name: Upload bartender outputs file
+        uses: actions/upload-artifact@v2
+        with:
+          name: bartender-command-outputs
+          path: /tmp/outputs.json
+      - name: Set release file path if no failiures
+        if: ${{ success() }}
         id: relfile
         run: | 
           echo ::set-output name=path::$(echo $(tail -1 outputs.txt) | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["release_file"]["path"])')    
-      - name: Upload dry run release file
+      - name: Upload dry run release file if no failiures
+        if: ${{ success() }}
         uses: actions/upload-artifact@v2
         with:
           name: bartender-dry-run-relfile

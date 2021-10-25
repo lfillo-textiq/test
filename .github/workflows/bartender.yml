@@ -45,19 +45,18 @@ jobs:
         run: sudo pip3 install PyGithub==1.55
       - name: Install latest bartender binary
         run: sudo bash ./scripts/install_latest_bartender.sh
-      - name: Execute bartender command
-        run: yes y | ${{ github.event.inputs.bartender_command }} -d
       - name: unzip bartender binary [REMOVE ME]
         run: unzip bartender.zip
-      - name: Execute bartender command [REMOVE ./]
+      - name: Execute bartender command [REMOVE ME ./]
+        id: command
         run: |
           set -o pipefail
-          ./${{ github.event.inputs.bartender_command }} -d -s 2>&1 | tee /tmp/outputs.txt
-      - name: Get last line of outputs.txt (release process output object, all other lines are logs)
-        if: ${{ success() | failiure() }}
-        run: echo $(tail -1 /tmp/outputs.txt) > /tmp/outputs.json
+          ./${{ github.event.inputs.bartender_command }} -d -s 2>&1 | tee /tmp/bartender.log
+      - name: Get last line of bartender.log (release process output object, all other lines are logs)
+        if:  success() || failure() 
+        run: echo $(tail -1 /tmp/bartender.log) > /tmp/outputs.json
       - name: Upload bartender outputs file
-        if: ${{ success() | failiure() }}
+        if:  success() || failure() 
         uses: actions/upload-artifact@v2
         with:
           name: bartender-command-outputs

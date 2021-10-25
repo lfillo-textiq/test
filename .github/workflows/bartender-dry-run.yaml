@@ -45,7 +45,9 @@ jobs:
       - name: unzip bartender binary [REMOVE ME]
         run: unzip bartender.zip
       - name: Execute bartender command [REMOVE ME ./]
-        run: ./${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee outputs.txt
+        run: |
+          ./${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee outputs.txt
+          echo $?
       - name: Set release file path
         id: relfile
         run: | 

@@ -12,8 +12,7 @@ on:
         default: 'U020CNBGDQA'
       dryrun_relfile_id:
         description: 'Slack Id of the dry run release file'
-        required: false
-        
+        required: false   
 jobs:
   start-runner:
     runs-on: ubuntu-latest

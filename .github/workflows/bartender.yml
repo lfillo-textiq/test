@@ -49,7 +49,8 @@ jobs:
           name: workflow-inputs
           path: /tmp/inputs.json
   run-bartender-command:
-    runs-on: ubuntu-latest
+    runs-on: ${{ needs.start-runner.outputs.label }}
+    needs: start-runner
     steps:   
       - uses: actions/checkout@v2
       - name: Add secrets.config

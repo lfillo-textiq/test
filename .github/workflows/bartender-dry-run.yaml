@@ -48,6 +48,7 @@ jobs:
           path: /tmp/inputs.json
   run-bartender:
     runs-on: ${{ needs.start-runner.outputs.label }}
+    needs: start-runner
     steps:   
       - uses: actions/checkout@v2
       - name: Add secrets.config

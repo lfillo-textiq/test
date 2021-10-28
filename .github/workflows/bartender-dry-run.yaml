@@ -5,7 +5,7 @@ on:
       bartender_command:
         description: 'Bartender CLI command'
         required: true
-        default: '-v'
+        default: 'bartender -v'
       release_manager:
         description: 'Id of slack user which triggered this workflow'
         required: true
@@ -68,7 +68,7 @@ jobs:
       - name: Execute bartender command [REMOVE ME ./]
         id: command
         env:
-          HOME: /root
+          HOME: /root # root user doesn't have HOME defined
         run: |
           set -o pipefail
           ./${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee /tmp/bartender.log

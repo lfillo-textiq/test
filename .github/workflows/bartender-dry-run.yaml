@@ -59,11 +59,9 @@ jobs:
           echo "PROD_AWS_SECRET_ACCESS_KEY=${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}" >> /usr/local/etc/secrets.config
           echo "GITHUB_PAT=${{ secrets.BARTENDER_PAT }}" >> /usr/local/etc/secrets.config
       - name: Install latest bartender binary
-        env: 
-          GITHUB_PAT: ${{ secrets.BARTENDER_PAT }}
         run: |
           sudo pip3 install PyGithub==1.55
-          sudo python3 ./scripts/install_latest_bartender.py
+          sudo GITHUB_PAT=${{ secrets.BARTENDER_PAT}} python3 ./scripts/install_latest_bartender.py
       - name: unzip bartender binary [REMOVE ME]
         run: unzip bartender.zip
       - name: Execute bartender command [REMOVE ME ./]

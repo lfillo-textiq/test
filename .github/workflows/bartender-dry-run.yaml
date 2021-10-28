@@ -53,11 +53,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Add secrets.config
         run: sudo touch /usr/local/etc/secrets.config
-      - name: Make user own secrets.config
-        run: |
-          echo $USER
-          echo $(whoami)
-          sudo chown $USER /usr/local/etc/secrets.config
       - name: Add secrets to config for integration tests
         run: |
           echo "BUILD_AWS_SECRET_ACCESS_KEY=${{ secrets.BUILD_AWS_SECRET_ACCESS_KEY }}" >> /usr/local/etc/secrets.config

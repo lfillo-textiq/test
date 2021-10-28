@@ -58,10 +58,12 @@ jobs:
           echo "UAT_AWS_SECRET_ACCESS_KEY=${{ secrets.UAT_AWS_SECRET_ACCESS_KEY }}" >> /usr/local/etc/secrets.config
           echo "PROD_AWS_SECRET_ACCESS_KEY=${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}" >> /usr/local/etc/secrets.config
           echo "GITHUB_PAT=${{ secrets.BARTENDER_PAT }}" >> /usr/local/etc/secrets.config
-      - name: Install PyGithub
-        run: sudo pip3 install PyGithub==1.55
       - name: Install latest bartender binary
-        run: sudo bash ./scripts/install_latest_bartender.sh
+        env: 
+          GITHUB_PAT: ${{ secrets.BARTENDER_PAT }}
+        run: |
+          sudo pip3 install PyGithub==1.55
+          sudo python3 ./scripts/install_latest_bartender.py
       - name: unzip bartender binary [REMOVE ME]
         run: unzip bartender.zip
       - name: Execute bartender command [REMOVE ME ./]

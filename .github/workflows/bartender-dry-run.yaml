@@ -9,8 +9,7 @@ on:
       release_manager:
         description: 'Id of slack user which triggered this workflow'
         required: true
-        default: 'U020CNBGDQA'
-        
+        default: 'U020CNBGDQA'       
 jobs:
   start-runner:
     runs-on: ubuntu-latest
@@ -53,7 +52,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Add secrets.config
         run: sudo touch /usr/local/etc/secrets.config
-      - name: Add secrets to config for integration tests
+      - name: Add secrets to config 
         run: |
           echo "BUILD_AWS_SECRET_ACCESS_KEY=${{ secrets.BUILD_AWS_SECRET_ACCESS_KEY }}" >> /usr/local/etc/secrets.config
           echo "UAT_AWS_SECRET_ACCESS_KEY=${{ secrets.UAT_AWS_SECRET_ACCESS_KEY }}" >> /usr/local/etc/secrets.config
@@ -74,10 +73,10 @@ jobs:
           ./${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee /tmp/bartender.log
           echo ::set-output name=exit-code::$?
       - name: Get last line of bartender.log (release process output object, all other lines are logs)
-        if:  success() || failure() 
+        if:  ${{ success() || failure() }}
         run: echo $(tail -1 /tmp/bartender.log) > /tmp/outputs.json
       - name: Upload bartender outputs file
-        if:  success() || failure() 
+        if:  ${{ success() || failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: bartender-command-outputs
@@ -95,7 +94,7 @@ jobs:
           path: ${{ steps.relfile.outputs.path}}
   stop-runner:
     needs:
-      - start-runner # required to get output from the start-runner job
+      - start-runner 
       - run-bartender 
     runs-on: ubuntu-latest
     if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs

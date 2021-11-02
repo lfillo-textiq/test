@@ -70,7 +70,7 @@ jobs:
           HOME: /root # root user doesn't have HOME defined
         run: |
           set -o pipefail
-          ./${{ github.event.inputs.bartender_command }} -D -s 2>&1 | tee /tmp/bartender.log
+          BARTENDER_ENV=prod ./${{ github.event.inputs.bartender_command }} -D -s 2>&1 | tee /tmp/bartender.log
           echo ::set-output name=exit-code::$?
       - name: Get last line of bartender.log (release process output object, all other lines are logs)
         if:  ${{ success() || failure() }}

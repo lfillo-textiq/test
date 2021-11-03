@@ -65,15 +65,14 @@ jobs:
         run: sudo pip3 install PyGithub==1.55
       - name: Install latest bartender binary
         run: sudo bash ./scripts/install_latest_bartender.sh
-      - name: unzip bartender binary [REMOVE ME]
-        run: unzip bartender.zip
-      - name: Execute bartender command [REMOVE ME ./]
+      - name: Execute bartender command
         id: command
         env:
           HOME: /root # root user doesn't have HOME defined
+          BARTENDER_ENV: prod
         run: |
           set -o pipefail
-          BARTENDER_ENV=prod ./${{ github.event.inputs.bartender_command }} -s 2>&1 | tee /tmp/bartender.log
+          ${{ github.event.inputs.bartender_command }} -d -s 2>&1 | tee /tmp/bartender.log
       - name: Get last line of bartender.log (release process output object, all other lines are logs)
         if:  ${{ success() || failure() }}
         run: echo $(tail -1 /tmp/bartender.log) > /tmp/outputs.json

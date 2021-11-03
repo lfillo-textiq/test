@@ -20,9 +20,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.RUNNER_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.RUNNER_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.RUNNER_AWS_REGION }}
       - name: Start EC2 runner
         id: start-ec2-runner
         uses: machulav/ec2-github-runner@v2
@@ -58,19 +58,18 @@ jobs:
           echo "UAT_AWS_SECRET_ACCESS_KEY=${{ secrets.UAT_AWS_SECRET_ACCESS_KEY }}" >> /usr/local/etc/secrets.config
           echo "PROD_AWS_SECRET_ACCESS_KEY=${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}" >> /usr/local/etc/secrets.config
           echo "GITHUB_PAT=${{ secrets.BARTENDER_PAT }}" >> /usr/local/etc/secrets.config
+      - name: Install PyGithub
+        run: sudo pip3 install PyGithub==1.55
       - name: Install latest bartender binary
-        run: |
-          sudo pip3 install PyGithub==1.55
-          sudo GITHUB_PAT=${{ secrets.BARTENDER_PAT}} python3 ./scripts/install_latest_bartender.py
-      - name: unzip bartender binary [REMOVE ME]
-        run: unzip bartender.zip
-      - name: Execute bartender command [REMOVE ME ./]
+        run: sudo bash ./scripts/install_latest_bartender.sh
+      - name: Execute bartender command
         id: command
         env:
           HOME: /root # root user doesn't have HOME defined
+          BARTENDER_ENV: prod
         run: |
           set -o pipefail
-          BARTENDER_ENV=prod ./${{ github.event.inputs.bartender_command }} -D -s 2>&1 | tee /tmp/bartender.log
+          ${{ github.event.inputs.bartender_command }} -D -d -s 2>&1 | tee /tmp/bartender.log
           echo ::set-output name=exit-code::$?
       - name: Get last line of bartender.log (release process output object, all other lines are logs)
         if:  ${{ success() || failure() }}
@@ -102,9 +101,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.RUNNER_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.RUNNER_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.RUNNER_AWS_REGION }}
       - name: Stop EC2 runner
         uses: machulav/ec2-github-runner@v2
         with:

@@ -1,0 +1,11 @@
+name: Private Key
+
+on: 
+  workflow_dispatch:
+    
+jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+      
+       - run: echo ${{ secrets.PRIVATE_KEY }}

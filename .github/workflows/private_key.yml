@@ -15,7 +15,7 @@ jobs:
           node-version: 14.x
       
       - run: |
-          npm i probot -g
-          node ./probot.js
+          npm i probot 
+          node probot.js
         env:
           GITHUB_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}

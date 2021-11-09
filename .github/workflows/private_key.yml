@@ -19,3 +19,5 @@ jobs:
           node probot.js
         env:
           GITHUB_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          APP_ID: 149448
+          WEBHOOK_SECRET: qaVPffSP3uNBKxn4rqFOr7VWK5KRdReu
